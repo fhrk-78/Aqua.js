@@ -1,0 +1,1 @@
+function init(){var aquaCode=document.getElementsByClassName('aqua');var ielem;for(var i=0;i<aquaCode.length;++i){ielem=aquaCode[i];runSection(ielem.innerText);console.log(ielem.innerText)}} function runSection(sectionText){var sectionCode=sectionText.split('\n');console.log(sectionCode[0])} init()
