@@ -1,9 +1,9 @@
 # Aqua.js ドキュメント
+[![CodeFactor](https://www.codefactor.io/repository/github/forestrharumaki/aqua.js-framework/badge)](https://www.codefactor.io/repository/github/forestrharumaki/aqua.js-framework)
 - Aqua.jsについて
 - スタートアップガイド
 - コードリファレンス
 # Aqua.jsについて
-[![CodeFactor](https://www.codefactor.io/repository/github/forestrharumaki/aqua.js-framework/badge)](https://www.codefactor.io/repository/github/forestrharumaki/aqua.js-framework)
 ## 何これ？
 これはHTML上でAquaを動かすフレームワークです。
 
@@ -36,6 +36,7 @@ sakamotor様によって作られた言語です。
         略
         <script src="ファイルパス" defer>
     </body>
+</html>
 ```
 ## CDN
 順次対応予定
@@ -47,13 +48,9 @@ sakamotor様によって作られた言語です。
 ### option
 オプションを設定できます
 ### out
-:::info
 公式からの詳細な情報はありません
-:::
 ### ln
-:::info
 公式からの詳細な情報はありません
-:::
 ### style
 出力スタイルを変更できます
 ### var
@@ -61,6 +58,4 @@ sakamotor様によって作られた言語です。
 ### set
 変数を変更できます
 ### if & end if
-:::info
 公式からの詳細な情報はありません
-:::
