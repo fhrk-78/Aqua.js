@@ -1,7 +1,7 @@
 // A javascript engine for running Aqua on the web
 
 function runAll() {
-    let aquaCode = document.getElementsByTagName('aqua');
+    const aquaCode = document.getElementsByTagName('aqua');
     let ielem;
     for(let i = 0;i < aquaCode.length;++i) {
         ielem = aquaCode[i];
@@ -11,14 +11,14 @@ function runAll() {
 }
 
 function runSection(sectionText) {
-    let sectionCode = sectionText.split('\n');
+    const sectionCode = sectionText.split('\n');
     for(let j = 0;j < sectionCode.length;++j) {
         runLine(sectionCode[j]);
     }
 }
 
 function runLine(lineText) {
-    let lineCode = lineText.split(' ');
+    const lineCode = lineText.split(' ');
     switch(lineCode[0]) {
         case 'outf':
             if(lineCode[1].charAt(0) == '\"' && lineCode[1].charAt(lineCode[1].length - 1) == '\"') {
@@ -36,5 +36,5 @@ function runLine(lineText) {
 if(document.getElementsByName('aquascript')[0].getAttribute('content') === 'true') {
     runAll();
 } else {
-    console.warn('Interpreter is disabled. \nInsert \"<meta name=\"aquascript\" content=\"true\">\" in <head> of HTML');
+    console.warn('Interpreter is disabled. \nInsert "<meta name="aquascript" content="true">" in <head> of HTML');
 }
