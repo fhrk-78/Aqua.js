@@ -1,11 +1,14 @@
 # Aqua.js ドキュメント
+- Aqua.jsについて
+- スタートアップガイド
+- コードリファレンス
 # Aqua.jsについて
 [![CodeFactor](https://www.codefactor.io/repository/github/forestrharumaki/aqua.js-framework/badge)](https://www.codefactor.io/repository/github/forestrharumaki/aqua.js-framework)
 ## 何これ？
 これはHTML上でAquaを動かすフレームワークです。
 
 Aquaタグで囲った部分がインタープリタによって実行されます
-```html:helloworld
+```html
 <aqua>
     outf "HelloWorld!"
 </aqua>
@@ -21,15 +24,16 @@ sakamotor様によって作られた言語です。
 3. aqua.jsを取り出す
 4. aqua.jsをサーバーにアップロード
 5. 適用したいHTMLにmetaとscriptのコードを追加
-```html:example
+
+```html
 <!DOCTYPE html>
 <html>
     <head>
-        ~略~
+        略
         <meta name="aquascript" content="true">
     </head>
     <body>
-        ~略~
+        略
         <script src="ファイルパス" defer>
     </body>
 ```
