@@ -21,7 +21,7 @@ function runLine(lineText) {
     const lineCode = lineText.split(' ');
     switch(lineCode[0]) {
         case 'outf':
-            if(lineCode[1].charAt(0) == '\"' && lineCode[1].charAt(lineCode[1].length - 1) == '\"') {
+            if(lineCode[1].charAt(0) == '"' && lineCode[1].charAt(lineCode[1].length - 1) == '"') {
                 document.body.insertAdjacentHTML('beforeend', lineCode[1].substring(1, lineCode[1].length - 1));
             } else {
                 console.error('A type literal is not explicitly specified.\n' + lineCode[0] + ' function wants string.\n' + (lineCode[1].charAt(0)) + ' ' + lineCode[1].charAt(lineCode[1].length - 1));
