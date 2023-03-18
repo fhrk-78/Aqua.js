@@ -17,3 +17,5 @@
         <script src="ファイルパス" defer>
     </body>
 ```
+## CDN
+順次対応予定
