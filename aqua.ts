@@ -1,6 +1,6 @@
 // A javascript engine for running Aqua on the web
 
-var var_valuebox = [
+let var_valuebox = [
     {
         name: '$version',
         content: '1.1',
@@ -60,6 +60,7 @@ function runLine(lineText) {
             break;
         case 'set':
             changeVar(lineCode[1], lineCode[2])
+            break;
         default:
             console.error(lineCode[0] + ' does not exist');
             break;
@@ -74,7 +75,7 @@ function letVar(varName, varType) {
         }
     }
 
-    let varInit = {
+    const varInit = {
         name: varName,
         content: '',
         type: varType
@@ -105,7 +106,7 @@ function getVar(varName) {
         }
     }
 
-    return var_valuebox[l].content;
+    return returns;
 }
 
 changeVar('$aqua',document.getElementsByName('aquascript')[0].getAttribute('content'));
