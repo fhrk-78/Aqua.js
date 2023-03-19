@@ -1,6 +1,5 @@
 // A javascript engine for running Aqua on the web
-var var_valuebox = [
-    {
+var var_valuebox = [{
         name: '$version',
         content: '1.0',
         type: 'string'
@@ -11,6 +10,7 @@ var var_valuebox = [
         type: 'string'
     }
 ];
+
 function runAll() {
     var aquaCode = document.getElementsByTagName('aqua');
     var ielem;
@@ -20,17 +20,18 @@ function runAll() {
         ielem.style.display = 'none';
     }
 }
+
 function runSection(sectionText) {
     if (getVar('$aqua') === 'vsc') {
         var sectionCode = sectionText.split(';');
-    }
-    else {
+    } else {
         var sectionCode = sectionText.split('\n');
     }
     for (var j = 0; j < sectionCode.length; ++j) {
         runLine(sectionCode[j]);
     }
 }
+
 function runLine(lineText) {
     var lineCode = lineText.split(' ');
     switch (lineCode[0]) {
@@ -42,11 +43,9 @@ function runLine(lineText) {
             console.log(echoWords);
             if (echoWords.charAt(0) == '"' && echoWords.charAt(echoWords.length - 1) == '"') {
                 document.body.insertAdjacentHTML('beforeend', '<span class="aqua_outf">' + echoWords.substring(1, echoWords.length - 1) + '</span>');
-            }
-            else if (getVar(echoWords) === '') {
+            } else if (getVar(echoWords) === '') {
                 console.error('A type literal is not explicitly specified.\n' + lineCode[0] + ' function wants string.\n' + (echoWords.charAt(0)) + ' ' + echoWords.charAt(lineCode[1].length - 1));
-            }
-            else {
+            } else {
                 document.body.insertAdjacentHTML('beforeend', '<span class="aqua_outf">' + getVar(echoWords).charAt(0) == '"' && getVar(echoWords).charAt(getVar(echoWords).length - 1) == '"' ? getVar(echoWords).substring(1, echoWords.length - 1) : getVar(echoWords) + '</span>');
             }
             break;
@@ -62,6 +61,7 @@ function runLine(lineText) {
             break;
     }
 }
+
 function letVar(varName, varType) {
     var l;
     for (l = 0; l < var_valuebox.length; ++l) {
@@ -77,6 +77,7 @@ function letVar(varName, varType) {
     var_valuebox.push(varInit);
     return false;
 }
+
 function changeVar(varName, varContent) {
     var l;
     for (l = 0; l < var_valuebox.length; ++l) {
@@ -86,6 +87,7 @@ function changeVar(varName, varContent) {
     }
     var_valuebox[l].content = varContent;
 }
+
 function getVar(varName) {
     var l;
     var returns = '';
@@ -100,7 +102,6 @@ function getVar(varName) {
 changeVar('$aqua', document.getElementsByName('aquascript')[0].getAttribute('content'));
 if (getVar('$aqua') === 'true' || getVar('$aqua') === 'vsc') {
     runAll();
-}
-else {
+} else {
     console.warn('Interpreter is disabled. \nInsert "<meta name="aquascript" content="true">" in <head> of HTML');
 }
