@@ -177,7 +177,11 @@ function aquajsMathEngine(commandTarget: string, engineLineCode: string[]) {
                 } else if(engineLineCode[1] === 'false') {
                     return true;
                 } else {
-                    return aquajsSubMathEngine(engineLineCode);
+                    let c_push_array: string[] = [];
+                    for(let i = 1;i < engineLineCode.length;++i) {
+                        c_push_array.push(engineLineCode[i]);
+                    }
+                    return aquajsSubMathEngine(c_push_array);
                 }
             case '+':
                 return parseFloat(engineLineCode[1]) + parseFloat(engineLineCode[2]);
@@ -208,7 +212,11 @@ function aquajsSubMathEngine(engineLineCode: string[]) {
             } else if(engineLineCode[1] === 'false') {
                 return true;
             } else {
-                return aquajsSubMathEngine(engineLineCode);
+                let c_push_array: string[] = [];
+                for(let i = 1;i < engineLineCode.length;++i) {
+                    c_push_array.push(engineLineCode[i]);
+                }
+                return aquajsSubMathEngine(c_push_array);
             }
         case '+':
             return parseFloat(engineLineCode[1]) + parseFloat(engineLineCode[2]);
