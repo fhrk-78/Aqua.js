@@ -1,4 +1,4 @@
-# 更新する気なくなったのでご自由に
+# (ﾟ∀ﾟ)ｱﾋｬ
 Codefactorは剝がしときました
 
 A javascript engine for running Aqua on the web
