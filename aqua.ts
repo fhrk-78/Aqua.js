@@ -37,6 +37,7 @@ function runSection(sectionText) {
 function runLine(lineText) {
     const lineCode = lineText.split(' ');
     switch(lineCode[0]) {
+        case 'option':
         case 'outf':
             let echoWords = '';
             for(let m = 1;m < lineCode.length;++m) {
