@@ -3,7 +3,7 @@
 let var_valuebox = [
     {
         name: '$version',
-        content: '1.1',
+        content: '1.5',
         type: 'string'
     },
     {
@@ -59,7 +59,9 @@ function runSection(sectionText) {
 
 function runLine(lineText) {
     const lineCode = lineText.split(' ');
-    if(aquajsMathEngineDo === null) {
+    if(lineCode[0].charAt(0) == '#') {
+        //Comment out
+    } else if(aquajsMathEngineDo === null) {
         switch(lineCode[0]) {
             case 'option':
                 changeVar('%' + lineCode[1], lineCode[2]);
@@ -120,9 +122,7 @@ function runLine(lineText) {
                 break;
         }
     } else {
-        if(aquajsMathEngine(aquajsMathEngineDo, lineCode) === 1) {
-            console.error("Aqua.js Framework Mathengine's task has failed.");
-        }
+        aquajsMathEngine(aquajsMathEngineDo, lineCode);
     }
 }
 

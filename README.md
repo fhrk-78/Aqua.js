@@ -1,4 +1,13 @@
-# 再びやる気が出ました
-- [ ] Canvasに対応
+# Aqua.js
+## 余談
+Aqua.jsはAqua.js-Mathengineを搭載しているので独自仕様が利用可能です。ただ、この仕様を利用する機会はないでしょう()
 
-A javascript engine for running Aqua on the web
+その独自仕様と言うのはこちらです！
+
+```aqua
+if :
+! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! true
+outf "無限不等号演算子！"
+#パフォーマンスの無駄遣いなので、やめようね
+end if
+```
