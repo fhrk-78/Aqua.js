@@ -80,6 +80,10 @@ function runAll() {
         ielem = aquaCode[i];
         runSection(ielem.innerText);
         ielem.style.display = 'none';
+        ielem.style.opacity = '0';
+        ielem.style.overflow = 'hidden';
+        ielem.style.width = '0';
+        ielem.style.height = '0';
     }
 }
 
