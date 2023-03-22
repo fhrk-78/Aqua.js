@@ -2,7 +2,7 @@
 | Version | AquaVersion | Status |
 | - | - | - |
 | 1.1.1 | A1.5(PerfectEdition) | 🚧 |
-| [1.1](https://github.com/forestrharumaki/Aqua.js-Framework/releases/tag/Aquajs1.1) | A1.5 | ☑️ |
+| [1.1](https://github.com/forestrharumaki/Aqua.js/releases/tag/Aquajs1.1) | A1.5 | ☑️ |
 | 1.0 | A1.4 | ❓ |
 
 ---
