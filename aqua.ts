@@ -197,6 +197,10 @@ function runLine(lineText) {
             case 'else':
                 nowIfStatus = 'do';
                 break;
+            case 'in':
+                let inputes = window.prompt('', '');
+                changeVar(lineCode[1], inputes);
+                break;
             case 'end':
                 if(lineCode[1] === 'if') {
                     nowIfStatus = null;
