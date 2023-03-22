@@ -61,7 +61,9 @@ function runSection(sectionText) {
 function runLine(lineText) {
     const lineCode = lineText.split(' ');
     if(lineCode[0].charAt(0) == '#') {
-        //Comment out
+        // Comment out
+    }else if(nowIfStatus === 'waitElse') {
+        // Wait Do
     } else if(aquajsMathEngineDo === null) {
         switch(lineCode[0]) {
             case 'using':
@@ -156,6 +158,14 @@ function runLine(lineText) {
             case 'throw':
                 console.error("(!)Error: " + parseFloat(lineCode[1]));
                 break;
+            case 'else':
+                nowIfStatus = 'do';
+                break;
+            case 'end':
+                if(lineCode[1] === 'if') {
+                    nowIfStatus = null;
+                }
+                break;
             case 'if':
                 if(lineCode[1] === ':') {
                     nowIfStatus = 'waitIf';
@@ -172,7 +182,7 @@ function runLine(lineText) {
                 console.error(lineCode[0] + ' does not exist');
                 break;
         }
-    } else {
+    } else if(nowIfStatus === 'waitIf') {
         aquajsMathEngine(aquajsMathEngineDo, lineCode);
     }
 }
