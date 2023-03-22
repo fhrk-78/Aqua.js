@@ -1,4 +1,5 @@
 // A javascript engine for running Aqua on the web
+// component & values
 
 let var_valuebox = [
     {
@@ -63,6 +64,7 @@ function runLine(lineText) {
         //Comment out
     } else if(aquajsMathEngineDo === null) {
         switch(lineCode[0]) {
+            case 'using':
             case 'option':
                 changeVar('%' + lineCode[1], lineCode[2]);
                 if(lineCode[1] === 'html_canvas') {
@@ -74,6 +76,26 @@ function runLine(lineText) {
                     } else if(lineCode[2] === 'false') {
                         aquaCanvas_ctx = null;
                         console.warn('Canvas is turned off, but CanvasElement is not removed. Also, it cannot be turned on again.');
+                    }
+                }
+                break;
+            case 'outf':
+                if(lineCode[1] === ':') {
+                    aquajsMathEngineDo = 'outf';
+                } else {
+                    let echoWords = '';
+                    for(let m = 1;m < lineCode.length;++m) {
+                        echoWords += lineCode[m];
+                    }
+    
+                    console.log(echoWords);
+    
+                    if(echoWords.charAt(0) == '"' && echoWords.charAt(echoWords.length - 1) == '"') {
+                        document.body.insertAdjacentHTML('beforeend', '<span class="aqua_outf">' + echoWords.substring(1, echoWords.length - 1) + '</span><br>');
+                    } else if(getVar(echoWords) === '') {
+                        console.error('A type literal is not explicitly specified.\n' + lineCode[0] + ' function wants string.\n' + (echoWords.charAt(0)) + ' ' + echoWords.charAt(lineCode[1].length - 1));
+                    } else {
+                        document.body.insertAdjacentHTML('beforeend', '<span class="aqua_outf">' + getVar(echoWords).charAt(0) == '"' && getVar(echoWords).charAt(getVar(echoWords).length - 1) == '"' ? getVar(echoWords).substring(1, echoWords.length - 1) : getVar(echoWords) + '</span><br>');
                     }
                 }
                 break;
@@ -114,7 +136,26 @@ function runLine(lineText) {
                 } else {
                     exitCode = lineCode[1];
                 }
-                console.warn("(!)Aqua.js can't exit code. Exitcode:" + exitCode);
+                console.warn("(!)Aqua.js can't run exit code. Exitcode:" + exitCode);
+                break;
+            case 'flush':
+                console.warn("(!)Aqua.js can't run flush code.");
+                break;
+            case 'ln':
+                if(lineCode.length === 1) {
+                    document.body.insertAdjacentHTML('beforeend', '<br>');
+                } else {
+                    for(let i = 0;i < parseFloat(lineCode[1]);++i) {
+                        document.body.insertAdjacentHTML('beforeend', '<br>');
+                    }
+                }
+                break;
+            case 'sh':
+                console.error("(!)Aqua.js can't run shell command.");
+                break;
+            case 'throw':
+                console.error("(!)Error: " + parseFloat(lineCode[1]));
+                break;
             case 'if':
                 if(lineCode[1] === ':') {
                     nowIfStatus = 'waitIf';
@@ -215,6 +256,10 @@ function aquajsMathEngine(commandTarget: string, engineLineCode: string[]) {
                 } else {
                     return engineLineCode[1];
                 }
+            case 'len':
+                return engineLineCode[1].length;
+            case 'ord':
+                return engineLineCode[1].length === 1 ? engineLineCode[1].charCodeAt(0) : 'Please enter CHAR type.';
             default:
                 console.error('Unexpected operator in Aqua.js Framework Mathengine detected.');
                 return null;
@@ -260,6 +305,10 @@ function aquajsSubMathEngine(engineLineCode: string[]) {
             } else {
                 return engineLineCode[1];
             }
+        case 'len':
+            return engineLineCode[1].length;
+        case 'ord':
+            return engineLineCode[1].length === 1 ? engineLineCode[1].charCodeAt(0) : 'Please enter CHAR type.';
         default:
             console.error('Unexpected operator in Aqua.js Framework Mathengine detected.');
             return null;
