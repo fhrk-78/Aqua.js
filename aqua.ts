@@ -1,4 +1,20 @@
-// A javascript engine for running Aqua on the web
+/*
+
+    Aqua.js - 1.1.1
+
+    < Information >
+    Aqua License: MIT
+    Aquajs License: Apache-2.0
+
+    < Description >
+    A javascript engine for running Aqua on the web
+
+    < Copyright >
+    Copyright (C) 2023 e6nlaq.
+    Copyright (C) 2023 FhRuby All right reserved.
+
+*/
+
 // component & values
 
 let var_valuebox = [
@@ -29,6 +45,24 @@ let var_valuebox = [
     }
 ];
 
+let def_functionbox = [
+    {
+        name: 'canvas',
+        args: [
+            {
+                name: 'options',
+                type: 'string',
+                required: false
+            }
+        ],
+        method: [
+            'out "Aqua.js WebGLCanvas Version: Alpha"',
+            'ln 2'
+        ],
+        return: false
+    }
+];
+
 let sectionCode;
 
 let nowIfStatus: string | null = null;
@@ -36,6 +70,8 @@ let aquajsMathEngineDo: string | null = null;
 
 let aquaCanvas_canvas;
 let aquaCanvas_ctx;
+
+// Code chain
 
 function runAll() {
     const aquaCode = document.getElementsByTagName('aqua');
@@ -322,6 +358,33 @@ function aquajsSubMathEngine(engineLineCode: string[]) {
         default:
             console.error('Unexpected operator in Aqua.js Framework Mathengine detected.');
             return null;
+    }
+}
+
+class aqua_tools_for_aquajs {
+    static download(filename: string, myurl: string, HTTPHeader: string) {
+        let CORSHeader = JSON.parse(HTTPHeader);
+        fetch(myurl, {
+            method: 'GET',
+            mode: 'cors',
+            headers: CORSHeader
+        })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                }, 0);
+            })
+            .catch(error => {
+                console.error(error);
+            });
     }
 }
 

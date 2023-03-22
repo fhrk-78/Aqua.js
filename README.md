@@ -1,4 +1,4 @@
-# Aqua.js
+# Aqua.js - 1ファイルで完結するAquaフレームワーク
 | Version | AquaVersion | Status |
 | - | - | - |
 | 1.1.1 | A1.5(PerfectEdition) | 🚧 |
