@@ -105,6 +105,16 @@ function runLine(lineText) {
             case 'set':
                 changeVar(lineCode[1], lineCode[2])
                 break;
+            case 'comment':
+                break;
+            case 'exit':
+                let exitCode;
+                if(lineCode.length === 1) {
+                    exitCode = 0;
+                } else {
+                    exitCode = lineCode[1];
+                }
+                console.warn("(!)Aqua.js can't exit code. Exitcode:" + exitCode);
             case 'if':
                 if(lineCode[1] === ':') {
                     nowIfStatus = 'waitIf';
@@ -195,6 +205,16 @@ function aquajsMathEngine(commandTarget: string, engineLineCode: string[]) {
                 return parseFloat(engineLineCode[1]) % parseFloat(engineLineCode[2]);
             case '^':
                 return parseFloat(engineLineCode[1]) ** parseFloat(engineLineCode[2]);
+            case 'fibz':
+                if(parseFloat(engineLineCode[1]) % 3 === 0 && parseFloat(engineLineCode[1]) % 5 === 0) {
+                    return 'FizzBuzz';
+                } else if(parseFloat(engineLineCode[1]) % 3 === 0) {
+                    return 'Fizz';
+                } else if(parseFloat(engineLineCode[1]) % 5 == 0) {
+                    return 'Buzz';
+                } else {
+                    return engineLineCode[1];
+                }
             default:
                 console.error('Unexpected operator in Aqua.js Framework Mathengine detected.');
                 return null;
@@ -230,6 +250,16 @@ function aquajsSubMathEngine(engineLineCode: string[]) {
             return parseFloat(engineLineCode[1]) % parseFloat(engineLineCode[2]);
         case '^':
             return parseFloat(engineLineCode[1]) ** parseFloat(engineLineCode[2]);
+        case 'fibz':
+            if(parseFloat(engineLineCode[1]) % 3 === 0 && parseFloat(engineLineCode[1]) % 5 === 0) {
+                return 'FizzBuzz';
+            } else if(parseFloat(engineLineCode[1]) % 3 === 0) {
+                return 'Fizz';
+            } else if(parseFloat(engineLineCode[1]) % 5 == 0) {
+                return 'Buzz';
+            } else {
+                return engineLineCode[1];
+            }
         default:
             console.error('Unexpected operator in Aqua.js Framework Mathengine detected.');
             return null;
