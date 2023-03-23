@@ -39,7 +39,7 @@ let var_alltype = [
     'int32_t',
     'int64_t',
     'string',
-    'number'
+    'char'
 ];
 
 // 変数一覧 (システム変数と共存) [ $ : Aqua.js独自システム変数 | % : Aquaシステムinclude(Using || Option) ]
@@ -335,6 +335,9 @@ function changeVar(varName, varContent) {
     if (varContent.charAt(0) == '"' && varContent.charAt(varContent.length - 1) == '"') {
         varContentAfter = varContent.substring(1, varContent.length - 1);
         varContentType = 'string';
+    } else if (varContent.charAt(0) == "'" && varContent.charAt(varContent.length - 1) == "'" && varContent.length === 1) {
+        varContentAfter = varContent.substring(1, varContent.length - 1);
+        varContentType = 'char';
     } else {
         if (parseFloat(varContent).toString() === varContent) {
             varContentAfter = varContent;
