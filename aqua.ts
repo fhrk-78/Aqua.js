@@ -46,6 +46,11 @@ let var_valuebox = [
         name: '%html_canvas',
         content: 'false',
         type: 'bool'
+    },
+    {
+        name: 'pi',
+        content: Math.PI.toString(),
+        type: 'double'
     }
 ];
 
@@ -116,9 +121,8 @@ function runLine(lineText) {
                 if(lineCode[1] === 'html_canvas') {
                     if(lineCode[2] === 'true') {
                         document.getElementsByTagName('body')[0].insertAdjacentHTML('beforeend','<canvas id="aqjs_c" width="100%" height="100%"></canvas>');
-                        aquaCanvas_canvas = document.getElementById('aqjs_c');
-                        let aquaCanvas_cc = aquaCanvas_canvas as HTMLCanvasElement;
-                        aquaCanvas_ctx = aquaCanvas_cc.getContext('2d');
+                        aquaCanvas_canvas = document.getElementById('aqjs_c') as HTMLCanvasElement;
+                        aquaCanvas_ctx = aquaCanvas_canvas.getContext('2d');
                     } else if(lineCode[2] === 'false') {
                         aquaCanvas_ctx = null;
                         console.warn('Canvas is turned off, but CanvasElement is not removed. Also, it cannot be turned on again.');
@@ -137,11 +141,11 @@ function runLine(lineText) {
                     console.log(echoWords);
     
                     if(echoWords.charAt(0) == '"' && echoWords.charAt(echoWords.length - 1) == '"') {
-                        document.body.insertAdjacentHTML('beforeend', '<span class="aqua_outf">' + echoWords.substring(1, echoWords.length - 1) + '</span><br>');
+                        document.body.insertAdjacentHTML('beforeend', '<span class="aqua_out">' + echoWords.substring(1, echoWords.length - 1) + '</span><br>');
                     } else if(getVar(echoWords) === '') {
                         console.error('A type literal is not explicitly specified.\n' + lineCode[0] + ' function wants string.\n' + (echoWords.charAt(0)) + ' ' + echoWords.charAt(lineCode[1].length - 1));
                     } else {
-                        document.body.insertAdjacentHTML('beforeend', '<span class="aqua_outf">' + getVar(echoWords).charAt(0) == '"' && getVar(echoWords).charAt(getVar(echoWords).length - 1) == '"' ? getVar(echoWords).substring(1, echoWords.length - 1) : getVar(echoWords) + '</span><br>');
+                        document.body.insertAdjacentHTML('beforeend', '<span class="aqua_out">' + getVar(echoWords).charAt(0) == '"' && getVar(echoWords).charAt(getVar(echoWords).length - 1) == '"' ? getVar(echoWords).substring(1, echoWords.length - 1) : getVar(echoWords) + '</span><br>');
                     }
                 }
                 break;
@@ -157,11 +161,11 @@ function runLine(lineText) {
                     console.log(echoWords);
     
                     if(echoWords.charAt(0) == '"' && echoWords.charAt(echoWords.length - 1) == '"') {
-                        document.body.insertAdjacentHTML('beforeend', '<span class="aqua_outf">' + echoWords.substring(1, echoWords.length - 1) + '</span>');
+                        document.body.insertAdjacentHTML('beforeend', '<span class="aqua_out">' + echoWords.substring(1, echoWords.length - 1) + '</span>');
                     } else if(getVar(echoWords) === '') {
                         console.error('A type literal is not explicitly specified.\n' + lineCode[0] + ' function wants string.\n' + (echoWords.charAt(0)) + ' ' + echoWords.charAt(lineCode[1].length - 1));
                     } else {
-                        document.body.insertAdjacentHTML('beforeend', '<span class="aqua_outf">' + getVar(echoWords).charAt(0) == '"' && getVar(echoWords).charAt(getVar(echoWords).length - 1) == '"' ? getVar(echoWords).substring(1, echoWords.length - 1) : getVar(echoWords) + '</span>');
+                        document.body.insertAdjacentHTML('beforeend', '<span class="aqua_out">' + getVar(echoWords).charAt(0) == '"' && getVar(echoWords).charAt(getVar(echoWords).length - 1) == '"' ? getVar(echoWords).substring(1, echoWords.length - 1) : getVar(echoWords) + '</span>');
                     }
                 }
                 break;
@@ -185,7 +189,7 @@ function runLine(lineText) {
                 console.warn("(!)Aqua.js can't run exit code. Exitcode:" + exitCode);
                 break;
             case 'flush':
-                console.warn("(!)Aqua.js can't run flush code.");
+                window.location.reload();
                 break;
             case 'ln':
                 if(lineCode.length === 1) {
@@ -194,6 +198,12 @@ function runLine(lineText) {
                     for(let i = 0;i < parseFloat(lineCode[1]);++i) {
                         document.body.insertAdjacentHTML('beforeend', '<br>');
                     }
+                }
+                break;
+            case 'clear':
+                let clear_target = document.getElementsByClassName('aqua_out') as HTMLCollection;
+                for(let i = 0;i < clear_target.length;++i) {
+                    clear_target[i].remove;
                 }
                 break;
             case 'sh':
@@ -318,6 +328,20 @@ function aquajsMathEngine(commandTarget: string, engineLineCode: string[]) {
                 return engineLineCode[1].length;
             case 'ord':
                 return engineLineCode[1].length === 1 ? engineLineCode[1].charCodeAt(0) : 'Please enter CHAR type.';
+            case 'chr':
+                return String.fromCharCode(parseInt(engineLineCode[1]));
+            case 'abs':
+                return Math.abs(parseFloat(engineLineCode[1]));
+            case 'sqrt':
+                return Math.sqrt(parseFloat(engineLineCode[1]));
+            case 'sin':
+                return Math.sin(parseFloat(engineLineCode[1]));
+            case 'cos':
+                return Math.cos(parseFloat(engineLineCode[1]));
+            case 'tan':
+                return Math.tan(parseFloat(engineLineCode[1]));
+            case '&':
+                return engineLineCode[1] + engineLineCode[2];
             default:
                 console.error('Unexpected operator in Aqua.js Framework Mathengine detected.');
                 return null;
