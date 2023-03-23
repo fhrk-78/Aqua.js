@@ -106,6 +106,7 @@ let def_functionbox = [
 let sectionCode;
 
 let nowIfStatus: string | null = null;
+let gotoLabel: string | null = null;
 let aquajsMathEngineDo: string | null = null;
 
 let aquaCanvas_canvas;
@@ -270,6 +271,28 @@ function runLine(lineText) {
                     }
                 }
                 break;
+            case 'label':
+                if (gotoLabel != null && gotoLabel === lineCode[1]) {
+                    gotoLabel = null;
+                }
+                break;
+            case 'is_prime':
+                if (lineCode[1] <= 1) {
+                    return false;
+                }
+                if (2 === lineCode[1]) {
+                    return true;
+                }
+                if (0 === lineCode[1] % 2) {
+                    return false;
+                }
+                var square_root = Math.floor(Math.sqrt(lineCode[1]));
+                for (var i = 3; i <= square_root; i += 2) {
+                    if (0 === lineCode[1] % i) {
+                        return false;
+                    }
+                }
+                return true;
             default:
                 console.error(lineCode[0] + ' does not exist');
                 break;
