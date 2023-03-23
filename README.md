@@ -1,7 +1,7 @@
 # Aqua.js - 1ファイルで完結するAquaフレームワーク
-# Install
+## Install
 `release`タブを開いて好きなバージョンを選ぶ。その後、aqua.jsというビルド済みのファイルをダウンロードする
-# Support
+## Support
 | Version | AquaVersion | Status |
 | - | - | - |
 | 1.1.1 | A1.5(PE) | 🚧 |
