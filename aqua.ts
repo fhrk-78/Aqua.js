@@ -1,7 +1,5 @@
 /*
 
-
-
     Aqua.js - 1.1.1
 
     < Information >
@@ -12,51 +10,84 @@
     A javascript engine for running Aqua on the web
 
     < Copyright >
-    Copyright (C) 2023 e6nlaq.
-    Copyright (C) 2023 FhRuby All right reserved.
-
-
+    [ AquaScript ] Copyright (C) 2023 e6nlaq.
+    [ Aqua.js ] Copyright (C) 2023 FhRuby All right reserved.
 
 */
 
-// component & values
+///// component & values /////
+
+// システム型一覧 (エイリアスが存在する場合は配列化)
+
+let var_alltype = [
+    [
+        'int',
+        'int32'
+    ],
+    [
+        'long',
+        'int64'
+    ],
+    [
+        'longlong',
+        'll'
+    ],
+    [
+        'bool',
+        'boolean'
+    ],
+    'int32_t',
+    'int64_t',
+    'string',
+    'number'
+];
+
+// 変数一覧 (システム変数と共存) [ $ : Aqua.js独自システム変数 | % : Aquaシステムinclude(Using || Option) ]
 
 let var_valuebox = [
     {
         name: '$version',
-        content: '1.5',
-        type: 'string'
+        content: '1.1.1',
+        type: 'string',
+        const: true
     },
     {
         name: '$aqua',
-        content: 'true',
-        type: 'string'
+        content: '1.5',
+        type: 'string',
+        const: true
     },
     {
         name: '%function_skip',
         content: 'true',
-        type: 'bool'
+        type: 'bool',
+        const: true
     },
     {
         name: '%reset_style',
         content: 'false',
-        type: 'bool'
+        type: 'bool',
+        const: true
     },
     {
         name: '%html_canvas',
         content: 'false',
-        type: 'bool'
+        type: 'bool',
+        const: true
     },
     {
         name: 'pi',
         content: Math.PI.toString(),
-        type: 'double'
+        type: 'double',
+        const: true
     }
 ];
 
+// 登録済み関数一覧 [ $ : Aqua.js独自システム関数 | % : Aquaシステムビルトイン ]
+
 let def_functionbox = [
     {
-        name: 'canvas',
+        name: '$canvas',
         args: [
             {
                 name: 'options',
@@ -80,19 +111,22 @@ let aquajsMathEngineDo: string | null = null;
 let aquaCanvas_canvas;
 let aquaCanvas_ctx;
 
-// Code chain
+///// Code chain /////
 
 function runAll() {
     const aquaCode = document.getElementsByTagName('aqua');
     let ielem;
     for(let i = 0;i < aquaCode.length;++i) {
         ielem = aquaCode[i];
-        runSection(ielem.innerText);
         ielem.style.display = 'none';
         ielem.style.opacity = '0';
         ielem.style.overflow = 'hidden';
         ielem.style.width = '0';
         ielem.style.height = '0';
+    }
+
+    for (let i = 0; i < aquaCode.length; ++i) {
+        runSection(ielem.innerText);
     }
 }
 
@@ -170,7 +204,7 @@ function runLine(lineText) {
                 }
                 break;
             case 'var':
-                if(letVar(lineCode[2], lineCode[1])) {
+                if(letVar(lineCode[2], lineCode[1], false)) {
                     console.error('duplicate variable name.');
                 }
                 break;
@@ -245,22 +279,42 @@ function runLine(lineText) {
     }
 }
 
-function letVar(varName, varType) {
+///// Operate values /////
+
+function letVar(varName, varType, constYes) {
     let l;
     for(l = 0;l < var_valuebox.length;++l) {
         if(var_valuebox[l].name === varName) {
-            return true;
+            return -1;
         }
+    }
+
+    let okay: boolean = false;
+
+    for (let i = 0; i < var_alltype.length; ++i) {
+        if (var_valuebox[l].type === var_alltype[i]) {
+            okay = true;
+            break;
+        }
+    }
+
+    if(okay === false) {
+        return -1;
     }
 
     const varInit = {
         name: varName,
         content: '',
-        type: varType
+        type: varType,
+        const: false
     };
 
+    if(constYes === true) {
+        varInit.const = true;
+    }
+
     var_valuebox.push(varInit);
-    return false;
+    return 0;
 }
 
 function changeVar(varName, varContent) {
@@ -271,7 +325,36 @@ function changeVar(varName, varContent) {
         }
     }
 
-    var_valuebox[l].content = varContent;
+    if (var_valuebox[l].const === true) {
+        return -1;
+    }
+
+    let varContentAfter: string;
+    let varContentType: string;
+
+    if (varContent.charAt(0) == '"' && varContent.charAt(varContent.length - 1) == '"') {
+        varContentAfter = varContent.substring(1, varContent.length - 1);
+        varContentType = 'string';
+    } else {
+        if (parseFloat(varContent).toString() === varContent) {
+            varContentAfter = varContent;
+            varContentType = 'number';
+        } else {
+            return -1;
+        }
+    }
+
+    if (var_valuebox[l].type != varContentType) {
+        if ((var_valuebox[l].type === 'int' || var_valuebox[l].type === 'int32' || var_valuebox[l].type === 'int64' || var_valuebox[l].type === 'longlong' || var_valuebox[l].type === 'll' || var_valuebox[l].type === 'int32_t' || var_valuebox[l].type === 'int64_t') && varContentType === 'number') {
+            var_valuebox[l].content = varContent;
+        } else {
+            return -1;
+        }
+    } else {
+        var_valuebox[l].content = varContent;
+    }
+
+    return 0;
 }
 
 function getVar(varName) {
@@ -286,6 +369,8 @@ function getVar(varName) {
 
     return returns;
 }
+
+///// Aqua.js MathEngine /////
 
 function aquajsMathEngine(commandTarget: string, engineLineCode: string[]) {
     if(commandTarget === engineLineCode[0]) {
@@ -391,11 +476,27 @@ function aquajsSubMathEngine(engineLineCode: string[]) {
             return engineLineCode[1].length;
         case 'ord':
             return engineLineCode[1].length === 1 ? engineLineCode[1].charCodeAt(0) : 'Please enter CHAR type.';
+        case 'chr':
+            return String.fromCharCode(parseInt(engineLineCode[1]));
+        case 'abs':
+            return Math.abs(parseFloat(engineLineCode[1]));
+        case 'sqrt':
+            return Math.sqrt(parseFloat(engineLineCode[1]));
+        case 'sin':
+            return Math.sin(parseFloat(engineLineCode[1]));
+        case 'cos':
+            return Math.cos(parseFloat(engineLineCode[1]));
+        case 'tan':
+            return Math.tan(parseFloat(engineLineCode[1]));
+        case '&':
+            return engineLineCode[1] + engineLineCode[2];
         default:
             console.error('Unexpected operator in Aqua.js Framework Mathengine detected.');
             return null;
     }
 }
+
+///// AquaTools for Aqua.js /////
 
 class aqua_tools_for_aquajs {
     static download(filename: string, myurl: string, HTTPHeader: string) {
@@ -423,6 +524,8 @@ class aqua_tools_for_aquajs {
             });
     }
 }
+
+///// Main Method /////
 
 changeVar('$aqua',document.getElementsByName('aquascript')[0].getAttribute('content'));
 
