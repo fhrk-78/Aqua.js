@@ -4,7 +4,8 @@
 ## Support
 | Version | AquaVersion | Status |
 | - | - | - |
-| 1.1.1 | A1.5(SE) | 🚧 |
+| 2.0 | A1.5(SE) | 🚧 |
+| 1.1.1 | A1.5(SE) | ❓ |
 | [1.1](https://github.com/forestrharumaki/Aqua.js/releases/tag/Aquajs1.1) | A1.5 | ☑️ |
 | 1.0 | A1.4 | ❓ |
 | β・α | A1.0 | ❓ |
