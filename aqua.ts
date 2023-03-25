@@ -19,14 +19,19 @@ let runCode: string[];
 let baseItem: number;
 let afterJSCode: string;
 let outputStyle: string = '';
+let statusB: HTMLElement;
 
 // VisualStudioCode has auto shaping.
 let isVSCode: boolean = true;
 
 class aqua_compiler {
     static main() {
+        widgets();
         const aquaCode = document.getElementsByTagName('aqua');
-        document.body.insertAdjacentHTML('beforeend','<iframe id="HTMLAquaScriptSandBox" srcdoc="compiling..." frameborder="0" sandbox="allow-scripts allow-modals allow-popups-to-escape-sandbox"></iframe>');
+        document.body.style.margin = '0';
+        document.body.style.height = '100%';
+        document.body.style.width = '100%';
+        document.body.insertAdjacentHTML('beforeend','<iframe width="100%" height="100%" id="HTMLAquaScriptSandBox" srcdoc="compiling..." frameborder="0" sandbox="allow-scripts allow-modals allow-popups-to-escape-sandbox" style="width: 100%;height: 100%;"></iframe>');
         let ielem;
 
         for (let i = 0; i < aquaCode.length; ++i) {
@@ -50,8 +55,10 @@ class aqua_compiler {
             let rcs = spr(baseItem);
             doFunction(rcs);
         }
+        console.log(afterJSCode);
         //参考 (https://note.affi-sapo-sv.com/js-least-common-multiple.php)
-        document.getElementById('HTMLAquaScriptSandBox')!.setAttribute('srcdoc', "<script>class aquaJS {\nstatic fizzBuzz(target: number) {\nif (target % 3 === 0 && target % 5 === 0) {\n    return 'FizzBuzz';\n} else if (target % 3 === 0) {\n    return 'Fizz';\n} else if (target % 5 == 0) {\n    return 'Buzz';\n} else {\n    return target;\n}\n}\nstatic is_prime(target: number) {\nif (target <= 1) {\n    return false;\n}\n    if (2 === target) {\n    return true;\n}\n    if (0 === target % 2) {\n    return false;\n}\n    var square_root = Math.floor(Math.sqrt(target));\nfor (var i = 3; i <= square_root; i += 2) {\n    if (0 === target % i) {\n        return false;\n    }\n}\nreturn true;\n}\n}\nconst aqua_gcd = function () {\n    const f = (x, y) => y ? f(y, x % y) : x;\n    let ans = arguments[0];\n    for (let i = 1; i < arguments.length; i++) {\n        ans = f(ans, arguments[i]);\n    }\n    return ans;\n}\nconst greatestCommonDivisor = (value1, value2) => value2 === 0 ? value1\n    : greatestCommonDivisor(value2, value1 % value2);\nconst leastCommonMultiple = (value1, value2) =>\n    value1 * value2 / greatestCommonDivisor(value1, value2);\nconst leastCommonMultiple2 = (valueArray) =>\n    valueArray.reduce((a, b) => leastCommonMultiple(a, b));\nconst aqua_lcm = function() {\nleastCommonMultiple2(arguments);\n}\n" + afterJSCode + "</script>");
+        document.getElementById('HTMLAquaScriptSandBox')!.setAttribute('srcdoc', "<script>\nclass aquaJS {\nstatic fizzBuzz(target) {\nif (target % 3 === 0 && target % 5 === 0) {\n    return 'FizzBuzz';\n} else if (target % 3 === 0) {\n    return 'Fizz';\n} else if (target % 5 == 0) {\n    return 'Buzz';\n} else {\n    return target;\n}\n}\nstatic is_prime(target) {\nif (target <= 1) {\n    return false;\n}\n    if (2 === target) {\n    return true;\n}\n    if (0 === target % 2) {\n    return false;\n}\n    var square_root = Math.floor(Math.sqrt(target));\nfor (var i = 3; i <= square_root; i += 2) {\n    if (0 === target % i) {\n        return false;\n    }\n}\nreturn true;\n}\n}\nconst aqua_gcd = function () {\n    const f = (x, y) => y ? f(y, x % y) : x;\n    let ans = arguments[0];\n    for (let i = 1; i < arguments.length; i++) {\n        ans = f(ans, arguments[i]);\n    }\n    return ans;\n}\nconst greatestCommonDivisor = (value1, value2) => value2 === 0 ? value1\n    : greatestCommonDivisor(value2, value1 % value2);\nconst leastCommonMultiple = (value1, value2) =>\n    value1 * value2 / greatestCommonDivisor(value1, value2);\nconst leastCommonMultiple2 = (valueArray) =>\n    valueArray.reduce((a, b) => leastCommonMultiple(a, b));\nconst aqua_lcm = function() {\nleastCommonMultiple2(arguments);\n}\n" + afterJSCode + "\n</script>");
+        statusB.setAttribute('style', statusB.getAttribute('style')!.substring(0, 193) + '-120px');
     }
 }
 
@@ -61,7 +68,14 @@ function saj(code) {
 }
 
 function spr(itemNumber:number) {
-    return runCode[itemNumber].split(' ');
+    let ForGomiTypeScriptCompiler: string = runCode[itemNumber];
+    let KokomadeyaranakyaDamenannkaErrordasugurainaraKaiketsuhouhoumoOshieroyoGomikusogaSHINE: string = ForGomiTypeScriptCompiler.replace(/^\s+/, "");
+    return KokomadeyaranakyaDamenannkaErrordasugurainaraKaiketsuhouhoumoOshieroyoGomikusogaSHINE.split(" ");
+}
+
+function widgets() {
+    document.body.insertAdjacentHTML('afterbegin','<div id="statusB" style="text-align: center;font-size: 1.5rem;position: absolute;height: 100px;width: 500px;background-color: #1fed7c;opacity: .5;border-radius: 50px;top: 0;left: calc(50vw - 250px);transition: .5s;top: 20px">Now compiling to Javascript...</div>');
+    statusB = document.getElementById('statusB') as HTMLElement;
 }
 
 function doFunction(firstcode: string[]) {
@@ -135,6 +149,7 @@ function doFunction(firstcode: string[]) {
                 }
                 saj(`");\n`);
             }
+            break;
         case 'lsh':
             saj(`${firstcode[1]} << ${firstcode[2]}`);
             break;
